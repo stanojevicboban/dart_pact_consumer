@@ -62,7 +62,7 @@ class PactRepository {
       RequestBuilder requestBuilder, String state) {
     return Interaction()
       ..description = requestBuilder.description
-      ..providerStates = [ProviderState()..name = state]
+      ..providerState = state
       ..request = (_toRequest(requestBuilder))
       ..response = (_toResponse(requestBuilder.response));
   }

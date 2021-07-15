@@ -26,7 +26,7 @@ class Pact {
 class Metadata {
   Metadata();
 
-  Map<String, String> pactSpecification = {'version': '3.0.0'};
+  Map<String, String> pactSpecification = {'version': '2.0.0'};
 
   @JsonKey(name: 'pact-dart')
   Map<String, String> pactDart = {'version': '0.1.0'};
@@ -42,7 +42,7 @@ class Interaction {
   String description;
   Request request;
   Response response;
-  List<ProviderState> providerStates = [];
+  String providerState;
 
   Interaction();
 

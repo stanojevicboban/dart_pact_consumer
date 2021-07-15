@@ -73,11 +73,7 @@ Interaction _$InteractionFromJson(Map<String, dynamic> json) {
     ..response = json['response'] == null
         ? null
         : Response.fromJson(json['response'] as Map<String, dynamic>)
-    ..providerStates = (json['providerStates'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ProviderState.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..providerState = (json['providerState'] as String);
 }
 
 Map<String, dynamic> _$InteractionToJson(Interaction instance) {
@@ -92,7 +88,7 @@ Map<String, dynamic> _$InteractionToJson(Interaction instance) {
   writeNotNull('description', instance.description);
   writeNotNull('request', instance.request);
   writeNotNull('response', instance.response);
-  writeNotNull('providerStates', instance.providerStates);
+  writeNotNull('providerState', instance.providerState);
   return val;
 }
 
