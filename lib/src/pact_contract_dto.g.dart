@@ -16,7 +16,7 @@ Pact _$PactFromJson(Map<String, dynamic> json) {
         : Consumer.fromJson(json['consumer'] as Map<String, dynamic>)
     ..interactions = (json['interactions'] as List)
         ?.map((e) =>
-            e == null ? null : Interaction.fromJson(e as Map<String, dynamic>))
+    e == null ? null : Interaction.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..metadata = json['metadata'] == null
         ? null
@@ -42,11 +42,11 @@ Map<String, dynamic> _$PactToJson(Pact instance) {
 Metadata _$MetadataFromJson(Map<String, dynamic> json) {
   return Metadata()
     ..pactSpecification =
-        (json['pactSpecification'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+    (json['pactSpecification'] as Map<String, dynamic>)?.map(
+          (k, e) => MapEntry(k, e as String),
     )
     ..pactDart = (json['pact-dart'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+          (k, e) => MapEntry(k, e as String),
     );
 }
 
@@ -116,7 +116,10 @@ Response _$ResponseFromJson(Map<String, dynamic> json) {
   return Response()
     ..status = json['status'] as int
     ..headers = (json['headers'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+          (k, e) => MapEntry(k, e as String),
+    )
+    ..matchingRules = (json['matchingRules'] as Map<String, dynamic>)?.map(
+          (k, e) => MapEntry(k, e as String),
     )
     ..body = Body.fromJsonToBody(json['body']);
 }
@@ -133,6 +136,7 @@ Map<String, dynamic> _$ResponseToJson(Response instance) {
   writeNotNull('status', instance.status);
   writeNotNull('headers', instance.headers);
   writeNotNull('body', instance.body);
+  writeNotNull('matchingRules', instance.matchingRules);
   return val;
 }
 
@@ -141,10 +145,10 @@ Request _$RequestFromJson(Map<String, dynamic> json) {
     ..method = json['method'] as String
     ..path = json['path'] as String
     ..query = (json['query'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+          (k, e) => MapEntry(k, e as String),
     )
     ..headers = (json['headers'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+          (k, e) => MapEntry(k, e as String),
     )
     ..body = Body.fromJsonToBody(json['body']);
 }
@@ -160,7 +164,7 @@ Map<String, dynamic> _$RequestToJson(Request instance) {
 
   writeNotNull('method', instance.method);
   writeNotNull('path', instance.path);
-  writeNotNull('query', instance.query);
+  // writeNotNull('query', instance.query);
   writeNotNull('headers', instance.headers);
   writeNotNull('body', instance.body);
   return val;

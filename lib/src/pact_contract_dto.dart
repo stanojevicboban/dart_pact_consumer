@@ -73,6 +73,8 @@ class Response {
 
   Map<String, String> headers = {};
 
+  Map<String, dynamic> matchingRules = {};
+
   @JsonKey(fromJson: Body.fromJsonToBody)
   Body body;
 

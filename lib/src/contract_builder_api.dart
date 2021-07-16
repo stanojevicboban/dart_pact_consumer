@@ -54,7 +54,7 @@ class PactRepository {
 
   static void _mergeInteractions(PactBuilder builder, Pact contract) {
     final interactions = builder.stateBuilders.expand(
-        (st) => st.requests.map((req) => _toInteraction(req, st.state)));
+            (st) => st.requests.map((req) => _toInteraction(req, st.state)));
     contract.interactions.addAll(interactions);
   }
 
@@ -80,6 +80,7 @@ class PactRepository {
     return Response()
       ..headers = response.headers
       ..status = response.status.code
+      ..matchingRules = response.matchingRules
       ..body = response.body;
   }
 
@@ -231,6 +232,8 @@ class ResponseBuilder {
 
   Status status = Status(200);
 
+  Map<String, dynamic> matchingRules = {};
+
   Body body = Body.empty();
 
   void _validate() {
@@ -264,9 +267,9 @@ class Body extends Union3<Json, String, Unit> implements CustomJson {
   @override
   dynamic toJson() {
     return fold(
-      (js) => js.toJson(),
-      (str) => str,
-      (unit) => unit.toJson(),
+          (js) => js.toJson(),
+          (str) => str,
+          (unit) => unit.toJson(),
     );
   }
 
@@ -310,8 +313,8 @@ class Json extends Union2<Iterable<dynamic>, Map<String, dynamic>>
   @override
   dynamic toJson() {
     return fold(
-      (arr) => arr,
-      (obj) => obj,
+          (arr) => arr,
+          (obj) => obj,
     );
   }
 }
