@@ -28,8 +28,8 @@ class Metadata {
 
   Map<String, String> pactSpecification = {'version': '2.0.0'};
 
-  @JsonKey(name: 'pact-dart')
-  Map<String, String> pactDart = {'version': '0.1.0'};
+  // @JsonKey(name: 'pact-dart')
+  // Map<String, String> pactDart = {'version': '0.1.0'};
 
   factory Metadata.fromJson(Map<String, dynamic> json) =>
       _$MetadataFromJson(json);
@@ -92,6 +92,7 @@ class Request {
   String path;
   Map<String, String> query = {};
   Map<String, String> headers = {};
+  Map<String, dynamic> matchingRules = {};
 
   @JsonKey(fromJson: Body.fromJsonToBody)
   Body body;

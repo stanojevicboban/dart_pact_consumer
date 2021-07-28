@@ -73,6 +73,7 @@ class PactRepository {
       ..path = requestBuilder.path
       ..query = requestBuilder.query
       ..body = requestBuilder.body
+      ..matchingRules = requestBuilder.matchingRules
       ..headers = requestBuilder.headers;
   }
 
@@ -206,6 +207,7 @@ class RequestBuilder {
   Body body = Body.isNullOrAbsent();
 
   Map<String, String> headers = {};
+  Map<String, dynamic> matchingRules = {};
 
   void setResponse(void Function(ResponseBuilder respBuilder) func) {
     final builder = ResponseBuilder._();

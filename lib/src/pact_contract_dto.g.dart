@@ -44,10 +44,10 @@ Metadata _$MetadataFromJson(Map<String, dynamic> json) {
     ..pactSpecification =
     (json['pactSpecification'] as Map<String, dynamic>)?.map(
           (k, e) => MapEntry(k, e as String),
-    )
-    ..pactDart = (json['pact-dart'] as Map<String, dynamic>)?.map(
-          (k, e) => MapEntry(k, e as String),
     );
+    // ..pactDart = (json['pact-dart'] as Map<String, dynamic>)?.map(
+    //       (k, e) => MapEntry(k, e as String),
+    // );
 }
 
 Map<String, dynamic> _$MetadataToJson(Metadata instance) {
@@ -60,7 +60,7 @@ Map<String, dynamic> _$MetadataToJson(Metadata instance) {
   }
 
   writeNotNull('pactSpecification', instance.pactSpecification);
-  writeNotNull('pact-dart', instance.pactDart);
+  // writeNotNull('pact-dart', instance.pactDart);
   return val;
 }
 
@@ -150,6 +150,9 @@ Request _$RequestFromJson(Map<String, dynamic> json) {
     ..headers = (json['headers'] as Map<String, dynamic>)?.map(
           (k, e) => MapEntry(k, e as String),
     )
+    ..matchingRules = (json['matchingRules'] as Map<String, dynamic>)?.map(
+          (k, e) => MapEntry(k, e as String),
+    )
     ..body = Body.fromJsonToBody(json['body']);
 }
 
@@ -165,6 +168,7 @@ Map<String, dynamic> _$RequestToJson(Request instance) {
   writeNotNull('method', instance.method);
   writeNotNull('path', instance.path);
   // writeNotNull('query', instance.query);
+  writeNotNull('matchingRules', instance.matchingRules);
   writeNotNull('headers', instance.headers);
   writeNotNull('body', instance.body);
   return val;
