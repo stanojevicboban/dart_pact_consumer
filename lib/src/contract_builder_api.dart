@@ -37,7 +37,7 @@ class PactRepository {
   }
 
   /// Gets a pact file in JSON format
-  String getPactFile(String consumer, String provider) {
+  String? getPactFile(String consumer, String provider) {
     return _pacts[_key(consumer, provider)].let((value) {
       return jsonEncode(value);
     });
@@ -55,7 +55,7 @@ class PactRepository {
   static void _mergeInteractions(PactBuilder builder, Pact contract) {
     final interactions = builder.stateBuilders.expand(
         (st) => st.requests.map((req) => _toInteraction(req, st.state)));
-    contract.interactions.addAll(interactions);
+    contract.interactions?.addAll(interactions);
   }
 
   static Interaction _toInteraction(
@@ -99,11 +99,12 @@ class RequestTester {
 
   RequestTester._(this._stateBuilder);
 
-  void test(MockServerFactory factory, RequestTestFunction testFunction) async {
+  Future<void> test(
+      MockServerFactory factory, RequestTestFunction testFunction) async {
     final pactBuilder = PactBuilder()..stateBuilders.add(_stateBuilder);
     final pact = PactRepository._createHeader(pactBuilder);
     PactRepository._mergeInteractions(pactBuilder, pact);
-    final server = factory.createMockServer(pact.interactions[0]);
+    final server = factory.createMockServer((pact.interactions![0])!);
     try {
       await testFunction(server);
       _stateBuilder._tested = true;
@@ -132,8 +133,8 @@ class RequestTester {
 /// . Generators
 /// . Encoders
 class PactBuilder {
-  String consumer;
-  String provider;
+  String consumer = '';
+  String provider = '';
   final List<StateBuilder> _states = [];
 
   PactBuilder();
@@ -158,7 +159,7 @@ class PactBuilder {
 enum Method { GET, POST, DELETE, PUT }
 
 class StateBuilder {
-  String state;
+  String state = '';
   bool _tested = false;
 
   final List<RequestBuilder> requests = [];
@@ -197,7 +198,7 @@ class RequestBuilder {
 
   String description = '';
   Method method = Method.GET;
-  ResponseBuilder _response;
+  ResponseBuilder _response = ResponseBuilder();
 
   Map<String, String> query = {};
 
@@ -238,6 +239,8 @@ class ResponseBuilder {
     assert(status != null);
     assert(body != null);
   }
+
+  ResponseBuilder();
 
   ResponseBuilder._();
 }

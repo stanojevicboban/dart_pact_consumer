@@ -6,11 +6,11 @@ import 'package:dart_pact_consumer/src/pact_contract_dto.dart';
 
 class PactHost {
   final String _hostUri;
-  final Lazy<HttpClient> _lazyClient;
+  Lazy<HttpClient> _lazyClient = HttpClient() as Lazy<HttpClient>;
 
-  HttpClient get _client => _lazyClient.value;
+  HttpClient? get _client => _lazyClient.value;
 
-  PactHost(this._hostUri, {HttpClient client})
+  PactHost(this._hostUri, {HttpClient? client})
       : _lazyClient = Lazy(client, () => HttpClient());
 
   Future<void> publishContract(Pact contract, String version) async {
@@ -18,11 +18,11 @@ class PactHost {
         '${_pactUrl(contract.provider.name, contract.consumer.name)}/version/$version';
 
     var uri = Uri.parse(urlStr);
-    final request = await _client.putUrl(uri);
-    request.headers.contentType = ContentType.json;
-    request.write(jsonEncode(contract.toJson()));
+    final request = await _client?.putUrl(uri);
+    request?.headers.contentType = ContentType.json;
+    request?.write(jsonEncode(contract.toJson()));
 
-    await _doRequest(request);
+    await _doRequest(request!);
   }
 
   String _pactUrl(String provider, String consumer) {
@@ -47,25 +47,25 @@ class PactHost {
     final pactUrl =
         '${_participantUrl(participant)}/versions/$version/tags/$tag';
     var uri = Uri.parse(pactUrl);
-    final request = await _client.putUrl(uri);
-    request.headers.contentType = ContentType.json;
-    await _doRequest(request);
+    final request = await _client?.putUrl(uri);
+    request?.headers.contentType = ContentType.json;
+    await _doRequest(request!);
   }
 
   Future<void> addLabel(String participant, String label) async {
     final pactUrl = '${_participantUrl(participant)}/labels/$label';
     var uri = Uri.parse(pactUrl);
-    final request = await _client.putUrl(uri);
-    request.headers.contentType = ContentType.json;
-    await _doRequest(request);
+    final request = await _client?.putUrl(uri);
+    request?.headers.contentType = ContentType.json;
+    await _doRequest(request!);
   }
 
   Future<void> deleteParticipant(String participant) async {
     final pactUrl = '${_participantUrl(participant)}';
     var uri = Uri.parse(pactUrl);
-    final request = await _client.deleteUrl(uri);
-    request.headers.contentType = ContentType.json;
-    await _doRequest(request);
+    final request = await _client?.deleteUrl(uri);
+    request?.headers.contentType = ContentType.json;
+    await _doRequest(request!);
   }
 
   Future<String> _getContent(HttpClientResponse response) async {
@@ -73,8 +73,8 @@ class PactHost {
       return '';
     }
     final contentType = response.headers.contentType;
-    if (contentType.mimeType == ContentType.json.mimeType ||
-        contentType.mimeType == ContentType.text.mimeType) {
+    if (contentType?.mimeType == ContentType.json.mimeType ||
+        contentType?.mimeType == ContentType.text.mimeType) {
       return response.fold<List<int>>([], (prev, elem) => prev..addAll(elem))
           // todo fixed encoding
           .then((value) => utf8.decode(value));

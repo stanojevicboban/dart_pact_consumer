@@ -8,12 +8,12 @@ part of 'pact_contract_dto.dart';
 
 Pact _$PactFromJson(Map<String, dynamic> json) {
   return Pact()
-    ..provider = json['provider'] == null
+    ..provider = (json['provider'] == null
         ? null
-        : Provider.fromJson(json['provider'] as Map<String, dynamic>)
-    ..consumer = json['consumer'] == null
+        : Provider.fromJson(json['provider'] as Map<String, dynamic>))!
+    ..consumer = (json['consumer'] == null
         ? null
-        : Consumer.fromJson(json['consumer'] as Map<String, dynamic>)
+        : Consumer.fromJson(json['consumer'] as Map<String, dynamic>))!
     ..interactions = (json['interactions'] as List)
         ?.map((e) =>
             e == null ? null : Interaction.fromJson(e as Map<String, dynamic>))
@@ -42,10 +42,10 @@ Map<String, dynamic> _$PactToJson(Pact instance) {
 Metadata _$MetadataFromJson(Map<String, dynamic> json) {
   return Metadata()
     ..pactSpecification =
-        (json['pactSpecification'] as Map<String, dynamic>)?.map(
+        (json['pactSpecification'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, e as String),
     )
-    ..pactDart = (json['pact-dart'] as Map<String, dynamic>)?.map(
+    ..pactDart = (json['pact-dart'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, e as String),
     );
 }
@@ -67,17 +67,17 @@ Map<String, dynamic> _$MetadataToJson(Metadata instance) {
 Interaction _$InteractionFromJson(Map<String, dynamic> json) {
   return Interaction()
     ..description = json['description'] as String
-    ..request = json['request'] == null
+    ..request = (json['request'] == null
         ? null
-        : Request.fromJson(json['request'] as Map<String, dynamic>)
-    ..response = json['response'] == null
+        : Request.fromJson(json['request'] as Map<String, dynamic>))!
+    ..response = (json['response'] == null
         ? null
-        : Response.fromJson(json['response'] as Map<String, dynamic>)
+        : Response.fromJson(json['response'] as Map<String, dynamic>))!
     ..providerStates = (json['providerStates'] as List)
-        ?.map((e) => e == null
+        .map((e) => e == null
             ? null
             : ProviderState.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        .toList();
 }
 
 Map<String, dynamic> _$InteractionToJson(Interaction instance) {
@@ -119,7 +119,7 @@ Map<String, dynamic> _$ProviderStateToJson(ProviderState instance) {
 Response _$ResponseFromJson(Map<String, dynamic> json) {
   return Response()
     ..status = json['status'] as int
-    ..headers = (json['headers'] as Map<String, dynamic>)?.map(
+    ..headers = (json['headers'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, e as String),
     )
     ..body = Body.fromJsonToBody(json['body']);
@@ -144,10 +144,10 @@ Request _$RequestFromJson(Map<String, dynamic> json) {
   return Request()
     ..method = json['method'] as String
     ..path = json['path'] as String
-    ..query = (json['query'] as Map<String, dynamic>)?.map(
+    ..query = (json['query'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, e as String),
     )
-    ..headers = (json['headers'] as Map<String, dynamic>)?.map(
+    ..headers = (json['headers'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, e as String),
     )
     ..body = Body.fromJsonToBody(json['body']);

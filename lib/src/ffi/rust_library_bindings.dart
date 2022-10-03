@@ -1,4 +1,5 @@
 import 'dart:ffi';
+
 import 'package:ffi/ffi.dart';
 
 import '../pact_exceptions.dart';
@@ -162,7 +163,7 @@ bool cleanup(DynamicLibrary lib, int port) {
   return _booleanBridge.fromNative(cleanupMockServerFunc(port));
 }
 
-void writePactFile(DynamicLibrary lib, int port, {String directory}) {
+void writePactFile(DynamicLibrary lib, int port, {String? directory}) {
   final dirNative = directory == null ? nullptr : directory.toNative();
   var func = lib.lookupFunction<
       Int32 Function(Int32 port, Pointer<Utf8> directory),
@@ -177,7 +178,8 @@ void writePactFile(DynamicLibrary lib, int port, {String directory}) {
     case 2:
       throw PactFfiException('The pact file was not able to be written');
     case 3:
-      throw PactFfiException('A mock server with the provided port was not found');
+      throw PactFfiException(
+          'A mock server with the provided port was not found');
     default:
       throw PactFfiException('Unknown result $writeResult');
   }

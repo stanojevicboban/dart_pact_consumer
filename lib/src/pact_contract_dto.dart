@@ -9,15 +9,14 @@ part 'pact_contract_dto.g.dart';
 
 @JsonSerializable()
 class Pact {
-  Provider provider;
-  Consumer consumer;
-  List<Interaction> interactions = [];
-  Metadata metadata = Metadata();
+  Provider provider = Provider();
+  Consumer consumer = Consumer();
+  List<Interaction?>? interactions = [];
+  Metadata? metadata = Metadata();
 
   Pact();
 
-  factory Pact.fromJson(Map<String, dynamic> json) =>
-      _$PactFromJson(json);
+  factory Pact.fromJson(Map<String, dynamic> json) => _$PactFromJson(json);
 
   Map<String, dynamic> toJson() => _$PactToJson(this);
 }
@@ -39,10 +38,10 @@ class Metadata {
 
 @JsonSerializable()
 class Interaction {
-  String description;
-  Request request;
-  Response response;
-  List<ProviderState> providerStates = [];
+  String description = '';
+  Request request = Request();
+  Response response = Response();
+  List<ProviderState?>? providerStates = [];
 
   Interaction();
 
@@ -54,7 +53,7 @@ class Interaction {
 
 @JsonSerializable()
 class ProviderState {
-  String name;
+  String name = '';
   Map<String, dynamic> params = {};
 
   ProviderState();
@@ -67,14 +66,14 @@ class ProviderState {
 
 @JsonSerializable()
 class Response {
-  int status;
+  int status = 0;
 
   Response();
 
-  Map<String, String> headers = {};
+  Map<String, String>? headers = {};
 
   @JsonKey(fromJson: Body.fromJsonToBody)
-  Body body;
+  Body body = Body.empty();
 
   factory Response.fromJson(Map<String, dynamic> json) =>
       _$ResponseFromJson(json);
@@ -86,13 +85,13 @@ class Response {
 class Request {
   Request();
 
-  String method;
-  String path;
-  Map<String, String> query = {};
-  Map<String, String> headers = {};
+  String method = '';
+  String path = '';
+  Map<String, String>? query = {};
+  Map<String, String>? headers = {};
 
   @JsonKey(fromJson: Body.fromJsonToBody)
-  Body body;
+  Body body = Body.empty();
 
   factory Request.fromJson(Map<String, dynamic> json) =>
       _$RequestFromJson(json);
@@ -102,7 +101,7 @@ class Request {
 
 @JsonSerializable()
 class Provider {
-  String name;
+  String name = '';
 
   Provider();
 
@@ -114,7 +113,7 @@ class Provider {
 
 @JsonSerializable()
 class Consumer {
-  String name;
+  String name = '';
 
   Consumer();
 
