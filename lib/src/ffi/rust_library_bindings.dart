@@ -35,17 +35,17 @@ class _BooleanBridge {
   int toNative(bool input) => input ? 1 : 0;
 }
 
-extension _StringExt on String {
-  Pointer<Utf8> toNative() {
-    return Utf8.toUtf8(this);
-  }
-}
+// extension _StringExt on String {
+//   Pointer<Utf8> toNative() {
+//     return Utf8.toUtf8(this);
+//   }
+// }
 
-extension _Utf8PointerExt on Pointer<Utf8> {
-  String toDartString() => ref.toString();
-
-  bool isNull() => this == null || this == nullptr;
-}
+// extension _Utf8PointerExt on Pointer<Utf8> {
+//   String toDartString() => ref.toString();
+//
+//   bool isNull() => this == null || this == nullptr;
+// }
 
 /// Opens the shared library given a local path.
 ///
@@ -68,7 +68,7 @@ void _init(DynamicLibrary lib, String envLogVariable) {
   // todo functions can be cached for the same lib instance
   // see DynamicLibrary.open docs
   final initFunc = lib.lookupFunction<_initNative, _initDart>('init');
-  initFunc(envLogVariable.toNative());
+  initFunc(envLogVariable.toNativeUtf8());
 }
 
 typedef _createMockServerNative = Int32 Function(
@@ -93,8 +93,8 @@ int createMockServer(DynamicLibrary lib, String jsonPact,
       lib.lookupFunction<_createMockServerNative, _createMockServerDart>(
           'create_mock_server');
   final createResult = createMockServerFunc(
-      jsonPact.toNative(),
-      '$host:$port'.toNative(), // 0 leaves port handling to OS
+      jsonPact.toNativeUtf8(),
+      '$host:$port'.toNativeUtf8(), // 0 leaves port handling to OS
       _booleanBridge.toNative(useTls));
   switch (createResult) {
     case -1:
@@ -142,10 +142,10 @@ String getJsonMismatch(DynamicLibrary lib, int port) {
       lib.lookupFunction<_mockServerMismatchNative, _mockServerMismatchDart>(
           'mock_server_mismatches');
   final mismatchJsonPointer = mockServerMismatchFunc(port);
-  if (mismatchJsonPointer.isNull()) {
+  if (mismatchJsonPointer == null) {
     throw PactFfiException('Invalid server or function error');
   }
-  return mismatchJsonPointer.toDartString();
+  return mismatchJsonPointer.toString();
 }
 
 typedef _cleanupMockServerNative = Int8 /*bool*/ Function(
@@ -164,7 +164,7 @@ bool cleanup(DynamicLibrary lib, int port) {
 }
 
 void writePactFile(DynamicLibrary lib, int port, {String? directory}) {
-  final dirNative = directory == null ? nullptr : directory.toNative();
+  final dirNative = directory == null ? nullptr : directory.toNativeUtf8();
   var func = lib.lookupFunction<
       Int32 Function(Int32 port, Pointer<Utf8> directory),
       int Function(int port, Pointer<Utf8> directory)>('write_pact_file');
@@ -192,7 +192,7 @@ String getCertificate(DynamicLibrary lib) {
   var func = lib.lookupFunction<_getCertificateNative, _getCertificateDart>(
       'get_tls_ca_certificate');
   var result = func();
-  if (result.isNull()) {
+  if (result == null) {
     throw PactFfiException('Invalid certificate from library');
   }
 
